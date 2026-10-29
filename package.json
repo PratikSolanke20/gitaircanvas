@@ -1,22 +1,19 @@
 {
-  "name": "flora-air-canvas",
-  "version": "1.0.0",
-  "description": "Camera view Air Canvas web application with 3D procedural botanical flower drawing, local fist erasing, and open-hand burst scattering animations powered by Google MediaPipe AI Vision.",
-  "main": "server.js",
+  "name": "air-canvas",
+  "version": "2.4.0",
+  "description": "Camera view Air Canvas - Cyber Hacker Edition by Pratik Solanke",
   "scripts": {
+    "build": "echo 'Static site ready for Vercel deployment'",
     "start": "node server.js",
-    "dev": "node server.js",
-    "serve": "node server.js"
+    "dev": "node server.js"
   },
   "keywords": [
     "air-canvas",
-    "mediapipe",
     "computer-vision",
-    "hand-tracking",
-    "botanical-flowers",
-    "interactive-art",
-    "web-audio"
+    "mediapipe",
+    "gesture-recognition",
+    "celestial-lotus"
   ],
-  "author": "Flora Air Canvas",
+  "author": "Pratik Solanke",
   "license": "MIT"
 }
