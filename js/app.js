@@ -44,8 +44,70 @@ class FloraAirCanvasApp {
 
   async init() {
     this.setupResizeHandler();
-    await this.initVisionAndCamera();
+    this.setupLaunchGate();
     this.startRenderLoop();
+
+    // Preload MediaPipe hands model in background
+    this.preloadVisionModel();
+  }
+
+  async preloadVisionModel() {
+    try {
+      if (typeof Hands === 'undefined') {
+        await this.waitForGlobal('Hands', 8000);
+      }
+      if (!this.hands && typeof Hands !== 'undefined') {
+        this.hands = new Hands({
+          locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.4.1675469240/${file}`
+        });
+        this.hands.setOptions({
+          maxNumHands: 1,
+          modelComplexity: 1,
+          minDetectionConfidence: 0.60,
+          minTrackingConfidence: 0.60
+        });
+        this.hands.onResults((results) => this.onHandResults(results));
+        if (typeof this.hands.initialize === 'function') {
+          await this.hands.initialize();
+        }
+      }
+    } catch (e) {
+      console.warn('Background vision preload notice:', e);
+    }
+  }
+
+  setupLaunchGate() {
+    const launchGate = document.getElementById('launch-gate');
+    const engageBtn = document.getElementById('btn-engage-camera');
+    const gateStatus = document.getElementById('gate-status-msg');
+
+    if (!engageBtn || !launchGate) return;
+
+    engageBtn.addEventListener('click', async () => {
+      engageBtn.disabled = true;
+      if (gateStatus) gateStatus.textContent = '> INITIALIZING_OPTICAL_SENSORS...';
+
+      // Unlock Web Audio context
+      if (this.soundEngine && typeof this.soundEngine.init === 'function') {
+        this.soundEngine.init();
+      }
+
+      try {
+        await this.initVisionAndCamera();
+        if (gateStatus) gateStatus.textContent = '> OPTICAL_LINK_ESTABLISHED';
+        
+        launchGate.classList.add('dismissed');
+        setTimeout(() => {
+          launchGate.style.display = 'none';
+        }, 500);
+      } catch (err) {
+        console.error('Launch gate startup error:', err);
+        engageBtn.disabled = false;
+        if (gateStatus) {
+          gateStatus.innerHTML = `<span style="color:#FF5252">> CAMERA_ACCESS_REQUIRED // PLEASE ALLOW CAMERA PERMISSION AND CLICK RETRY</span>`;
+        }
+      }
+    });
   }
 
   setupResizeHandler() {
@@ -80,26 +142,28 @@ class FloraAirCanvasApp {
     try {
       if (statusText) statusText.textContent = 'BOOT // LOADING_VISION_SYSTEM...';
 
-      if (typeof Hands === 'undefined') {
-        await this.waitForGlobal('Hands', 8000);
-      }
+      if (!this.hands) {
+        if (typeof Hands === 'undefined') {
+          await this.waitForGlobal('Hands', 8000);
+        }
 
-      this.hands = new Hands({
-        locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.4.1675469240/${file}`
-      });
+        this.hands = new Hands({
+          locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.4.1675469240/${file}`
+        });
 
-      this.hands.setOptions({
-        maxNumHands: 1,
-        modelComplexity: 1,
-        minDetectionConfidence: 0.60,
-        minTrackingConfidence: 0.60
-      });
+        this.hands.setOptions({
+          maxNumHands: 1,
+          modelComplexity: 1,
+          minDetectionConfidence: 0.60,
+          minTrackingConfidence: 0.60
+        });
 
-      this.hands.onResults((results) => this.onHandResults(results));
+        this.hands.onResults((results) => this.onHandResults(results));
 
-      if (statusText) statusText.textContent = 'CORE // COMPILING_WEIGHTS...';
-      if (typeof this.hands.initialize === 'function') {
-        await this.hands.initialize();
+        if (statusText) statusText.textContent = 'CORE // COMPILING_WEIGHTS...';
+        if (typeof this.hands.initialize === 'function') {
+          await this.hands.initialize();
+        }
       }
 
       if (statusText) statusText.textContent = 'OPTICAL // ENGAGING_CAMERA_SENSOR...';

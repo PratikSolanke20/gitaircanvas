@@ -3,9 +3,8 @@
   "version": "2.4.0",
   "description": "Camera view Air Canvas - Cyber Hacker Edition by Pratik Solanke",
   "scripts": {
-    "build": "echo 'Static site ready for Vercel deployment'",
-    "start": "node server.js",
-    "dev": "node server.js"
+    "start": "node local-server.js",
+    "dev": "node local-server.js"
   },
   "keywords": [
     "air-canvas",
