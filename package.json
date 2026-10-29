@@ -1,0 +1,22 @@
+{
+  "name": "flora-air-canvas",
+  "version": "1.0.0",
+  "description": "Camera view Air Canvas web application with 3D procedural botanical flower drawing, local fist erasing, and open-hand burst scattering animations powered by Google MediaPipe AI Vision.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "serve": "node server.js"
+  },
+  "keywords": [
+    "air-canvas",
+    "mediapipe",
+    "computer-vision",
+    "hand-tracking",
+    "botanical-flowers",
+    "interactive-art",
+    "web-audio"
+  ],
+  "author": "Flora Air Canvas",
+  "license": "MIT"
+}

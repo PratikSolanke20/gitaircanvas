@@ -1,0 +1,586 @@
+/* ==========================================================================
+   AIR CANVAS v2.4 - CYBER HACKER EDITION
+   Developer: Pratik Solanke
+   Ultra-High Performance (120 FPS), Modern & Eye-Catching CTC Buttons
+   ========================================================================== */
+
+:root {
+  --bg-deep: #03060a;
+  --bg-hud: rgba(6, 11, 18, 0.88);
+  
+  --neon-green: #00FF88;
+  --neon-cyan: #00E5FF;
+  --neon-purple: #7C4DFF;
+  --neon-magenta: #E040FB;
+  --neon-amber: #FFB300;
+
+  --text-white: #FFFFFF;
+  --text-dim: #94A3B8;
+  --text-cyan: #38BDF8;
+  --text-green: #00FF88;
+
+  --font-mono: 'JetBrains Mono', monospace;
+  --font-ui: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+
+  --glow-green: 0 0 24px rgba(0, 255, 136, 0.55);
+  --glow-cyan: 0 0 24px rgba(0, 229, 255, 0.55);
+  --glow-purple: 0 0 24px rgba(124, 77, 255, 0.55);
+
+  --transition-smooth: 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  font-family: var(--font-mono);
+  background-color: var(--bg-deep);
+  color: var(--text-white);
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  user-select: none;
+}
+
+/* ==========================================================================
+   CAMERA & CANVAS VIEWPORT (PURE & FULL SCREEN)
+   ========================================================================== */
+
+#app-container {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+#canvas-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #000000;
+}
+
+/* Live Video Feed (Mirrored) */
+#webcam-video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scaleX(-1);
+  z-index: 1;
+}
+
+/* Celestial Lotus Flower Layer (GPU Hardware-Accelerated) */
+#draw-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* Cyber Stylus Reticle Overlay */
+#overlay-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 3;
+  pointer-events: none;
+}
+
+/* Subtle CRT Corner Vignette */
+#canvas-container::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 4;
+  box-shadow: inset 0 0 100px rgba(0, 0, 0, 0.65);
+}
+
+/* ==========================================================================
+   TOP HUD BAR // MODERN HACKER INTERFACE
+   ========================================================================== */
+
+.cyber-header {
+  position: absolute;
+  top: 18px;
+  left: 20px;
+  right: 20px;
+  z-index: 10;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  pointer-events: none;
+}
+
+/* 1. BRAND & DEVELOPER PRATIK SOLANKE PANEL */
+.brand-panel {
+  pointer-events: auto;
+  background: var(--bg-hud);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(0, 229, 255, 0.28);
+  border-left: 3.5px solid var(--neon-cyan);
+  padding: 10px 18px;
+  border-radius: 10px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.7);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.system-tag {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.live-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--neon-green);
+  box-shadow: 0 0 8px var(--neon-green);
+  animation: pulseDot 1.4s ease-in-out infinite;
+}
+
+@keyframes pulseDot {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(0.7); opacity: 0.4; }
+}
+
+.system-title {
+  font-family: var(--font-ui);
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 1.2px;
+  color: #FFFFFF;
+}
+
+.version-tag {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--neon-cyan);
+  background: rgba(0, 229, 255, 0.12);
+  border: 1px solid rgba(0, 229, 255, 0.35);
+  padding: 1px 6px;
+  border-radius: 4px;
+  letter-spacing: 0.5px;
+}
+
+.developer-tag {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  letter-spacing: 0.6px;
+}
+
+.dev-label {
+  color: var(--text-dim);
+  font-weight: 600;
+}
+
+.dev-name {
+  color: var(--neon-green);
+  font-weight: 800;
+  letter-spacing: 0.8px;
+  text-shadow: 0 0 10px rgba(0, 255, 136, 0.45);
+}
+
+/* 2. DYNAMIC HAND RECOGNITION STATUS BADGE */
+.gesture-status-badge {
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 22px;
+  border-radius: 10px;
+  background: var(--bg-hud);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.7);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  transition: all var(--transition-smooth);
+}
+
+.status-indicator {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--text-dim);
+  display: inline-block;
+}
+
+.gesture-status-badge.state-draw {
+  border-color: var(--neon-cyan);
+  background: rgba(0, 229, 255, 0.16);
+  box-shadow: var(--glow-cyan);
+}
+.gesture-status-badge.state-draw .status-indicator {
+  background: var(--neon-cyan);
+  box-shadow: 0 0 10px var(--neon-cyan);
+}
+
+.gesture-status-badge.state-erase {
+  border-color: var(--neon-purple);
+  background: rgba(124, 77, 255, 0.16);
+  box-shadow: var(--glow-purple);
+}
+.gesture-status-badge.state-erase .status-indicator {
+  background: var(--neon-purple);
+  box-shadow: 0 0 10px var(--neon-purple);
+}
+
+.gesture-status-badge.state-burst_clear {
+  border-color: var(--neon-green);
+  background: rgba(0, 255, 136, 0.18);
+  box-shadow: var(--glow-green);
+  animation: pulseGlow 0.8s infinite alternate;
+}
+.gesture-status-badge.state-burst_clear .status-indicator {
+  background: var(--neon-green);
+  box-shadow: 0 0 10px var(--neon-green);
+}
+
+@keyframes pulseGlow {
+  0% { transform: scale(1); }
+  100% { transform: scale(1.03); }
+}
+
+.gesture-status-badge.state-idle {
+  border-color: rgba(0, 255, 136, 0.4);
+  color: var(--neon-green);
+}
+.gesture-status-badge.state-idle .status-indicator {
+  background: var(--neon-green);
+}
+
+/* ==========================================================================
+   3. LUXURY CYBER-HACKER CTC BUTTONS (WHATSAPP & LINKEDIN)
+   ========================================================================== */
+
+.ctc-actions-panel {
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.ctc-button {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 18px;
+  border-radius: 12px;
+  text-decoration: none;
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  overflow: hidden;
+  cursor: pointer;
+  transition: all var(--transition-smooth);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.65), inset 0 1px 1px rgba(255, 255, 255, 0.2);
+}
+
+.ctc-icon-wrap {
+  width: 38px;
+  height: 38px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all var(--transition-smooth);
+}
+
+.ctc-svg {
+  width: 22px;
+  height: 22px;
+  transition: transform var(--transition-smooth);
+}
+
+.ctc-text-wrap {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.25;
+}
+
+.ctc-title-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.ctc-header {
+  font-family: var(--font-ui);
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+}
+
+.ctc-beacon-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  display: inline-block;
+}
+.ctc-beacon-dot.green {
+  background: var(--neon-green);
+  box-shadow: 0 0 6px var(--neon-green);
+}
+.ctc-beacon-dot.cyan {
+  background: var(--neon-cyan);
+  box-shadow: 0 0 6px var(--neon-cyan);
+}
+
+.ctc-sub {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  color: var(--text-dim);
+  transition: color var(--transition-smooth);
+}
+
+.ctc-arrow {
+  font-size: 15px;
+  font-weight: 800;
+  margin-left: 2px;
+  transition: transform var(--transition-smooth);
+}
+
+/* Shimmer Light Sweep on Hover */
+.btn-shimmer {
+  position: absolute;
+  top: 0;
+  left: -120%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.22) 50%,
+    transparent 100%
+  );
+  transform: skewX(-25deg);
+  pointer-events: none;
+  transition: left 0.7s ease;
+}
+
+.ctc-button:hover .btn-shimmer {
+  left: 150%;
+}
+
+.ctc-button:active {
+  transform: scale(0.97);
+}
+
+/* WhatsApp CTC Button: Luxury Neon Emerald Matrix */
+.whatsapp-btn {
+  border: 1.5px solid rgba(0, 255, 136, 0.65);
+  background: linear-gradient(135deg, rgba(4, 26, 16, 0.94) 0%, rgba(6, 14, 20, 0.96) 100%);
+}
+
+.whatsapp-btn .ctc-icon-wrap {
+  background: rgba(0, 255, 136, 0.16);
+  color: var(--neon-green);
+  border: 1px solid rgba(0, 255, 136, 0.35);
+}
+
+.whatsapp-btn .ctc-header {
+  color: #FFFFFF;
+}
+
+.whatsapp-btn .ctc-sub {
+  color: var(--neon-green);
+}
+
+.whatsapp-btn .ctc-arrow {
+  color: var(--neon-green);
+}
+
+.whatsapp-btn:hover {
+  transform: translateY(-2px) scale(1.02);
+  border-color: var(--neon-green);
+  box-shadow: 0 0 32px rgba(0, 255, 136, 0.55), inset 0 1px 1px rgba(255, 255, 255, 0.35);
+}
+
+.whatsapp-btn:hover .ctc-icon-wrap {
+  transform: scale(1.08);
+  background: var(--neon-green);
+  color: #000000;
+  box-shadow: 0 0 16px var(--neon-green);
+}
+
+.whatsapp-btn:hover .ctc-arrow {
+  transform: translate(2px, -2px);
+}
+
+/* LinkedIn CTC Button: Luxury Cyber Electric Cyan */
+.linkedin-btn {
+  border: 1.5px solid rgba(0, 229, 255, 0.65);
+  background: linear-gradient(135deg, rgba(4, 22, 36, 0.94) 0%, rgba(6, 14, 20, 0.96) 100%);
+}
+
+.linkedin-btn .ctc-icon-wrap {
+  background: rgba(0, 229, 255, 0.16);
+  color: var(--neon-cyan);
+  border: 1px solid rgba(0, 229, 255, 0.35);
+}
+
+.linkedin-btn .ctc-header {
+  color: #FFFFFF;
+}
+
+.linkedin-btn .ctc-sub {
+  color: var(--neon-cyan);
+}
+
+.linkedin-btn .ctc-arrow {
+  color: var(--neon-cyan);
+}
+
+.linkedin-btn:hover {
+  transform: translateY(-2px) scale(1.02);
+  border-color: var(--neon-cyan);
+  box-shadow: 0 0 32px rgba(0, 229, 255, 0.55), inset 0 1px 1px rgba(255, 255, 255, 0.35);
+}
+
+.linkedin-btn:hover .ctc-icon-wrap {
+  transform: scale(1.08);
+  background: var(--neon-cyan);
+  color: #000000;
+  box-shadow: 0 0 16px var(--neon-cyan);
+}
+
+.linkedin-btn:hover .ctc-arrow {
+  transform: translate(2px, -2px);
+}
+
+/* ==========================================================================
+   CINEMATIC BOTANICAL BURST BANNER NOTIFICATION
+   ========================================================================== */
+
+#burst-banner {
+  position: absolute;
+  top: 92px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-20px);
+  z-index: 20;
+  background: linear-gradient(135deg, rgba(0, 229, 255, 0.16) 0%, rgba(124, 77, 255, 0.18) 100%);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1.5px solid rgba(0, 229, 255, 0.7);
+  padding: 10px 32px;
+  border-radius: 8px;
+  color: #FFFFFF;
+  font-family: var(--font-ui);
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  text-shadow: 0 0 16px rgba(0, 229, 255, 0.8);
+  box-shadow: 0 0 40px rgba(0, 229, 255, 0.4);
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+#burst-banner.active {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ==========================================================================
+   BOOT LOADER
+   ========================================================================== */
+
+#loading-indicator {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  background: var(--bg-hud);
+  backdrop-filter: blur(30px);
+  border: 1px solid var(--neon-cyan);
+  padding: 32px 48px;
+  border-radius: 10px;
+  box-shadow: 0 0 60px rgba(0, 229, 255, 0.3);
+  text-align: center;
+}
+
+.hacker-spinner {
+  width: 44px;
+  height: 44px;
+  border: 2px solid rgba(0, 229, 255, 0.15);
+  border-top-color: var(--neon-cyan);
+  border-right-color: var(--neon-green);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.loading-terminal-text {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--neon-cyan);
+  letter-spacing: 0.8px;
+}
+
+.loading-sub {
+  font-size: 11px;
+  color: var(--text-dim);
+}
+
+/* ==========================================================================
+   RESPONSIVE LAYOUT
+   ========================================================================== */
+
+@media (max-width: 1024px) {
+  .cyber-header {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .gesture-status-badge {
+    order: 3;
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 640px) {
+  .ctc-actions-panel {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
