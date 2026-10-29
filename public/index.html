@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Air Canvas v2.4 // Dev: Pratik Solanke</title>
+  
+  <!-- Modern Monospace & Display Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Core Stylesheet -->
+  <link rel="stylesheet" href="css/style.css">
+
+  <!-- Vision Neural Network Library -->
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.4.1675469240/hands.js" crossorigin="anonymous"></script>
+  <script>
+    if (typeof Hands === 'undefined') {
+      document.write('<script src="https://unpkg.com/@mediapipe/hands@0.4.1675469240/hands.js"><\/script>');
+    }
+  </script>
+</head>
+<body>
+  <div id="app-container">
+
+    <!-- CAMERA CANVAS VIEWPORT (PURE, FULL-SCREEN, DISTRACTION-FREE) -->
+    <div id="canvas-container">
+      <!-- Live Video Stream -->
+      <video id="webcam-video" autoplay playsinline muted></video>
+
+      <!-- Celestial Lotus Floral Canvas -->
+      <canvas id="draw-canvas"></canvas>
+
+      <!-- Real-Time Cyber Reticle Overlay Canvas -->
+      <canvas id="overlay-canvas"></canvas>
+    </div>
+
+    <!-- HIGH-END CYBER HACKER TOP HUD BAR -->
+    <header class="cyber-header">
+      
+      <!-- 1. AIR CANVAS IDENTITY & DEVELOPER PRATIK SOLANKE -->
+      <div class="brand-panel">
+        <div class="system-tag">
+          <span class="live-dot"></span>
+          <span class="system-title">AIR CANVAS</span>
+          <span class="version-tag">v2.4</span>
+        </div>
+        <div class="developer-tag">
+          <span class="dev-label">DEV:</span>
+          <span class="dev-name">PRATIK SOLANKE</span>
+        </div>
+      </div>
+
+      <!-- 2. HAND RECOGNITION STATUS BADGE -->
+      <div id="terminal-status" class="gesture-status-badge state-none">
+        <span class="status-indicator"></span>
+        <span id="status-text" class="status-text">> [ SEARCHING_FOR_HAND... ]</span>
+      </div>
+
+      <!-- 3. ULTRA-MODERN PROFESSIONAL EYE-CATCHING CTC BUTTONS -->
+      <div class="ctc-actions-panel">
+        
+        <!-- WhatsApp CTC Button (No phone number in text) -->
+        <a href="https://wa.me/919405560764" target="_blank" rel="noopener noreferrer" class="ctc-button whatsapp-btn" title="Direct connect with Pratik Solanke on WhatsApp">
+          <div class="ctc-icon-wrap">
+            <svg class="ctc-svg" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M17.472 14.382c-.301-.15-1.78-.878-2.056-.979-.276-.1-.476-.15-.676.15-.2.301-.776.979-.951 1.18-.175.2-.351.226-.652.076-.301-.15-1.27-.468-2.42-1.493-.894-.799-1.499-1.786-1.675-2.087-.175-.301-.019-.464.132-.614.136-.135.301-.351.451-.527.151-.176.201-.301.302-.502.101-.2.05-.376-.026-.527-.075-.15-.676-1.63-9.27-2.232-.244-.587-.492-.507-.676-.516l-.576-.01c-.2 0-.526.075-.802.376-.276.301-1.053 1.028-1.053 2.508 0 1.48 1.078 2.909 1.229 3.11.15.2 2.122 3.24 5.141 4.544.718.31 1.279.496 1.716.635.721.23 1.377.197 1.896.12.577-.087 1.78-.727 2.03-1.43.25-.702.25-1.304.175-1.43-.075-.125-.275-.2-.576-.35zM12 2a10 10 0 0 0-8.66 15L2 22l5.16-1.32A10 10 0 1 0 12 2zm0 18a8 8 0 0 1-4.08-1.12l-.29-.17-3.03.78.81-2.95-.19-.3A8 8 0 1 1 12 20z"/>
+            </svg>
+          </div>
+          <div class="ctc-text-wrap">
+            <div class="ctc-title-row">
+              <span class="ctc-header">WHATSAPP</span>
+              <span class="ctc-beacon-dot green"></span>
+            </div>
+            <span class="ctc-sub">DIRECT CONNECT</span>
+          </div>
+          <span class="ctc-arrow">↗</span>
+          <div class="btn-shimmer"></div>
+        </a>
+
+        <!-- LinkedIn CTC Button (No developer name in text) -->
+        <a href="https://www.linkedin.com/in/pratiksolanke20/" target="_blank" rel="noopener noreferrer" class="ctc-button linkedin-btn" title="View Pratik Solanke's LinkedIn Profile">
+          <div class="ctc-icon-wrap">
+            <svg class="ctc-svg" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z"/>
+            </svg>
+          </div>
+          <div class="ctc-text-wrap">
+            <div class="ctc-title-row">
+              <span class="ctc-header">LINKEDIN</span>
+              <span class="ctc-beacon-dot cyan"></span>
+            </div>
+            <span class="ctc-sub">VIEW PROFILE</span>
+          </div>
+          <span class="ctc-arrow">↗</span>
+          <div class="btn-shimmer"></div>
+        </a>
+
+      </div>
+    </header>
+
+    <!-- CINEMATIC BOTANICAL BURST NOTIFICATION -->
+    <div id="burst-banner">
+      ✨ 🌸 CELESTIAL LOTUS // SCATTER DISSIPATION 🌸 ✨
+    </div>
+
+    <!-- CYBER HACKER LAUNCH GATE / STARTING INTERFACE -->
+    <div id="launch-gate" class="launch-gate">
+      <div class="gate-scanlines"></div>
+      <div class="gate-hologram-card">
+        
+        <!-- Terminal Header Badge -->
+        <div class="gate-top-bar">
+          <div class="terminal-dots">
+            <span class="dot red"></span>
+            <span class="dot yellow"></span>
+            <span class="dot green"></span>
+          </div>
+          <div class="gate-version-badge">SYS://AIR_CANVAS.v2.4</div>
+        </div>
+
+        <!-- Hero Identity -->
+        <div class="gate-hero">
+          <div class="gate-glitch-title" data-text="AIR CANVAS">AIR CANVAS</div>
+          <div class="gate-subtitle">CYBERNETIC SPATIAL VISION INTERFACE</div>
+          <div class="gate-dev-chip">
+            <span class="chip-label">SYSTEM ARCHITECT:</span>
+            <span class="chip-val">PRATIK SOLANKE</span>
+          </div>
+        </div>
+
+        <!-- Locked Constant Settings Grid -->
+        <div class="gate-specs-grid">
+          <div class="spec-pill">
+            <span class="spec-k">ARCHETYPE</span>
+            <span class="spec-v highlight">CELESTIAL_LOTUS</span>
+          </div>
+          <div class="spec-pill">
+            <span class="spec-k">SIZE</span>
+            <span class="spec-v">40PX</span>
+          </div>
+          <div class="spec-pill">
+            <span class="spec-k">DENSITY</span>
+            <span class="spec-v">GARLAND [3]</span>
+          </div>
+          <div class="spec-pill">
+            <span class="spec-k">PURGE</span>
+            <span class="spec-v">65PX</span>
+          </div>
+          <div class="spec-pill">
+            <span class="spec-k">SENSITIVITY</span>
+            <span class="spec-v">1.2X</span>
+          </div>
+        </div>
+
+        <!-- Spatial Gesture Command Matrix -->
+        <div class="gate-gestures-card">
+          <div class="gestures-title">SPATIAL GESTURE PROTOCOLS</div>
+          <div class="gestures-grid">
+            <div class="gesture-row">
+              <span class="g-icon">☝️</span>
+              <div class="g-info">
+                <span class="g-cmd">POINT [INDEX FINGER]</span>
+                <span class="g-desc">Draw Celestial Lotus trails</span>
+              </div>
+            </div>
+            <div class="gesture-row">
+              <span class="g-icon">✊</span>
+              <div class="g-info">
+                <span class="g-cmd">CLOSED FIST</span>
+                <span class="g-desc">Erase local flowers</span>
+              </div>
+            </div>
+            <div class="gesture-row">
+              <span class="g-icon">🖐️</span>
+              <div class="g-info">
+                <span class="g-cmd">PALM [FINGERS CLOSED TOGETHER]</span>
+                <span class="g-desc">Standby / Idle mode</span>
+              </div>
+            </div>
+            <div class="gesture-row">
+              <span class="g-icon">🖐️</span>
+              <div class="g-info">
+                <span class="g-cmd">PALM [FINGERS SPREAD ASIDE]</span>
+                <span class="g-desc">Cosmic flower burst & scatter</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Launch Gate Developer CTC Options -->
+        <div class="gate-ctc-row">
+          <a href="https://wa.me/919405560764" target="_blank" rel="noopener noreferrer" class="gate-ctc-link whatsapp">
+            <svg class="gate-ctc-svg" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M17.472 14.382c-.301-.15-1.78-.878-2.056-.979-.276-.1-.476-.15-.676.15-.2.301-.776.979-.951 1.18-.175.2-.351.226-.652.076-.301-.15-1.27-.468-2.42-1.493-.894-.799-1.499-1.786-1.675-2.087-.175-.301-.019-.464.132-.614.136-.135.301-.351.451-.527.151-.176.201-.301.302-.502.101-.2.05-.376-.026-.527-.075-.15-.676-1.63-9.27-2.232-.244-.587-.492-.507-.676-.516l-.576-.01c-.2 0-.526.075-.802.376-.276.301-1.053 1.028-1.053 2.508 0 1.48 1.078 2.909 1.229 3.11.15.2 2.122 3.24 5.141 4.544.718.31 1.279.496 1.716.635.721.23 1.377.197 1.896.12.577-.087 1.78-.727 2.03-1.43.25-.702.25-1.304.175-1.43-.075-.125-.275-.2-.576-.35zM12 2a10 10 0 0 0-8.66 15L2 22l5.16-1.32A10 10 0 1 0 12 2zm0 18a8 8 0 0 1-4.08-1.12l-.29-.17-3.03.78.81-2.95-.19-.3A8 8 0 1 1 12 20z"/>
+            </svg>
+            <span>WHATSAPP CONNECT</span>
+          </a>
+          <a href="https://www.linkedin.com/in/pratiksolanke20/" target="_blank" rel="noopener noreferrer" class="gate-ctc-link linkedin">
+            <svg class="gate-ctc-svg" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z"/>
+            </svg>
+            <span>LINKEDIN PROFILE</span>
+          </a>
+        </div>
+
+        <!-- Master Launch Action Button -->
+        <button id="btn-engage-camera" class="cyber-launch-btn">
+          <span class="btn-crosshair left"></span>
+          <span class="btn-icon">⚡</span>
+          <span class="btn-label">INITIALIZE SYSTEM // ENGAGE CAMERA</span>
+          <span class="btn-crosshair right"></span>
+          <div class="launch-shimmer"></div>
+        </button>
+
+        <div id="gate-status-msg" class="gate-status-msg">> READY_TO_INITIALIZE</div>
+
+      </div>
+    </div>
+
+    <!-- BOOT / LOADING LOADER (FOR PERMISSION / WEIGHTS LOADING) -->
+    <div id="loading-indicator" style="display: none;">
+      <div class="hacker-spinner"></div>
+      <div id="terminal-status-text" class="loading-terminal-text">
+        BOOT // INITIALIZING_VISION_SYSTEM...
+      </div>
+      <div class="loading-sub">
+        STAND BY // PERMIT CAMERA ACCESS WHEN PROMPTED
+      </div>
+    </div>
+
+  </div>
+
+  <!-- APPLICATION MODULES -->
+  <script src="js/audioEffects.js"></script>
+  <script src="js/gestureRecognizer.js"></script>
+  <script src="js/flowerEngine.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
