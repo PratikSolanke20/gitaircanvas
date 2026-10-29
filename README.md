@@ -48,7 +48,7 @@ An ultra-sleek, modern **Hacker Edition** of the camera-view Air Canvas. Designe
 ```bash
 npm start
 ```
-*(or `node local-server.js`)*
+*(or `node server.js`)*
 
 Open your browser at:
 👉 **`http://localhost:3000`**
